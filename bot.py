@@ -37,11 +37,9 @@ def ensure_counter(db_ignored, key: str):
     if key not in STORE:
         STORE[key] = 0
 
-# Custom emoji IDs (must exist in a server your bot can use)
 ONLINE_EMOJI  = "<:online:1461143135857148015>"
 OFFLINE_EMOJI = "<:offline:1461143131151138816>"
 
-# Your custom field/title emojis (kept)
 TITLE_EMOJI = "<:hi:1461145636274438329>"
 FIELD_EMOJI = "<:hi:1461142744759144458>"
 TOTAL_EMOJI = "<:hi:1464850186890121321>"
@@ -163,12 +161,10 @@ class Pterodactyl:
 
         return counts
 
-# ---------- Setup ----------
 banner()
 time.sleep(1)
 info("Initializing...")
 
-# Keep your "db" variable name so the rest of the script stays identical
 db = None
 
 bot = Client(intents=Intents.DEFAULT)
@@ -183,12 +179,10 @@ if not TOKEN or not CHANNEL_ID or not PTERO_TOKEN or not PTERO_URL:
     while True:
         time.sleep(60)
 
-# No console prompts on Pterodactyl. If missing, fallback to @here.
 if PING_USER_ID and not PING_USER_ID.isdigit():
     warn("PING_USER_ID is not numeric; falling back to @here.")
     PING_USER_ID = ""
 
-# Store ping id in our in-memory store (so existing code paths work)
 set_db(db, "ping_user_id", PING_USER_ID)
 
 ptero = Pterodactyl(PTERO_URL, PTERO_TOKEN)
@@ -206,12 +200,10 @@ ensure_counter(db, "ca1_down_start_ts")
 ensure_counter(db, "panel_down_start_ts")
 ensure_counter(db, "dash_down_start_ts")
 
-# Store alert message IDs so we can delete them when recovered
 for k in ["uk1", "ca1", "panel", "dash"]:
     if get_db(db, f"alert_msg_{k}") is None:
         set_db(db, f"alert_msg_{k}", "")
 
-# Runtime caches
 CACHED_NODES = []  # [{name,fqdn,port,status,previous_status,latency_ms}]
 SERVICE_STATUS = {"panel": "DOWN", "dash": "DOWN"}
 SERVICE_LAT_MS = {"panel": None, "dash": None}
